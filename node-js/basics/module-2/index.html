@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Node.js</title>
+    <link rel="stylesheet" href="../assets/css/reveal.css">
+    <link rel="stylesheet" href="../assets/css/theme/beige.css">
+    <link rel="stylesheet" href="../assets/lib/css/zenburn.css">
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+    <div class="att_logo"></div>
+    <div class="reveal">
+        <div class="slides">
+            <!-- Node.js Basics -->
+            <section>
+                <h1>Node.js Basics</h1>
+                <sub>By Almog Laktivi</sub>
+            </section>
+            <!-- In This Module -->
+            <section>
+                <h2>In This Module</h2>
+                <p>What is Typescript</p>
+                <p>Typescript basics 
+                        <span style="font-size: 22px;">Types, Interfaces, Enums, Decorators</span>
+                    <br/>
+                <p>Modules & Node.js with Typescript</p>
+                </p>
+            </section>
+            <!-- JS awesome -->
+            <section>
+                <h3>So what's the problem with JS anyway?</h3>
+                <div class="fragment">
+                    <h3>Javascript is awesome!</h3>
+                    <img src="../assets/superman.png" width="300" alt="">
+                </div>
+            </section>
+            <!-- JS downsides -->
+            <section>
+                <h3>JS have downsides, I.E: it's more verbose</h3>
+                <pre>
+                    <code data-trim data-noescape class="js">
+                        function getUserById(id, connection, callback) {
+                            return new Promise((resolve, reject) =>{
+                                if(!id){
+                                    reject(new Error('user id is mandatory'));
+                                }
+    
+                                connection.getCollection('users')
+                                    .then(function(usersCollection, err){
+                                        if(err){
+                                            reject(err);
+                                        }
+                                        usersCollection.find({_id: id}...)
+                                    });
+                            });   
+                        }
+                    </code>
+                </pre>
+            </section>
+            <!-- Typescript example -->
+            <section>
+                <h2>Typescript rocks!</h2>
+                <pre class="wide">
+                    <code data-trim data-noescape class="ts">
+                        function getUserById(id: number, connection: MongoConnection): Promise&#60;User&#62; {
+                            try {
+                                const usersCollection = await connection.getCollection('users');
+                                return await usersCollection.find({_id: id}...)
+                            } catch (error){
+                                throw new Error(error.message);
+                            }
+                        }
+                    </code>
+                </pre>
+            </section>
+            <!-- Typescript and types -->
+            <section>
+                <section>
+                    <h3>What is Typescript?</h3>
+                    <h5>TypeScript is a strongly typed, object oriented, compiled language</h5>
+                    <br/>
+                    <ul><h5>features:</h5>
+                        <li>TypeScript transpiled to JavaScript</li>
+                        <li>TypeScript supports other JS libraries</li>
+                        <li>TypeScript is portable (cross-platform)</li>
+                        <li>Aligned with the ECMAScript6 specification</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Type hirarchy</h3>
+                    <img src="../assets/typescript_types.jpg">
+                </section>
+                <section>
+                    <h3>Types example</h3>
+                    <pre>
+                        <code data-trim data-noescape class="js">
+                            let name:string = "John"; 
+                            let score1:number = 50;
+                            let score2:number = 42.50;
+                            let sum = score1 + score2;
+
+                            storeNum(val:number):void { 
+                                let local_num = 14; 
+                             }
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <h3>Any type</h3>
+                    <p>We may need to describe the type of variables that we do not know when we are writing an application.</p>
+                    <pre>
+                        <code data-trim data-noescape class="js">
+                            let notSure: any = 4;
+                            notSure = "maybe a string instead";
+                            notSure = false;
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <h3>Define your own types</h3>
+                    <pre>
+                        <code data-trim data-noescape class="js">
+                            class Greeter {
+                                greeting: string;
+                                constructor(message: string) {
+                                    this.greeting = message;
+                                }
+                                greet() {
+                                    return "Hello, " + this.greeting;
+                                }
+                            }
+                            //Shorter way:
+                            class Person {
+                                readonly numberOfLegs: number = 2;
+                                constructor(private name: string, public last: string){}
+                            }
+
+                            let greeter = new Greeter("world");
+                            let person = new Person("Almog", "Laktivi");
+                        </code>
+                    </pre>
+                </section>
+            </section>
+            <!-- Typescript Interfaces -->
+            <section>
+                <h2>Typescript Interfaces</h2>
+                <section>
+                    <h3>Class types</h3>
+                    <pre>
+                        <code data-trim data-noescape class="js">
+                            interface ClockInterface {
+                                currentTime: Date;
+                                setTime(d: Date);
+                            }
+                            class Clock implements ClockInterface {
+                                currentTime: Date;
+                                setTime(d: Date) { this.currentTime = d; }
+                                constructor(h: number, m: number) { }
+                            }
+                            class SandClock implements ClockInterface {
+                                currentTime: Date;
+                                setTime(d: Date) { this.currentTime = d; }
+                                constructor(h: number, m: number) { }
+                            }
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <h3>Function types</h3>
+                    <pre>
+                        <code data-trim data-noescape class="js">
+                            interface SearchFunc {
+                                (source: string, subString: string): boolean;
+                            }
+                            
+                            let mySearch: SearchFunc;
+                            mySearch = function(source: string, subString: string) {
+                                let result = source.search(subString);
+                                return result > -1;
+                            }
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <h3>Optional Properties</h3>
+                    <pre>
+                        <code data-trim data-noescape class="js">
+                            interface SquareConfig {
+                                color?: string;
+                                width?: number;
+                            }                                
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <h3>Use interfaces to strict objects as variable</h3>
+                    <pre>
+                        <code data-trim data-noescape class="js">
+                            interface LabelledValue {
+                                label: string;
+                            }
+                            
+                            function printLabel(labelledObj: LabelledValue) {
+                                console.log(labelledObj.label);
+                            }
+                            
+                            let myObj = {size: 10, label: "Size 10 Object"};
+                            printLabel(myObj);
+                        </code>
+                    </pre>
+                </section> 
+            </section>
+            <!-- Typescript Enums -->
+            <section>
+                <h2>Typescript Enums</h2>
+                <section>
+                    <pre>
+                        <code data-trim data-noescape class="js">
+                            enum Response {
+                                No = 0,
+                                Yes = 1,
+                            }
+                            
+                            function respond(recipient: string, message: Response): void {
+                                // ...
+                            }
+                            
+                            respond("Princess Caroline", Response.Yes);
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <pre>
+                        <code data-trim data-noescape class="js">
+                            enum ShapeKind {
+                                Circle,
+                                Square,
+                            }
+                            interface Circle {
+                                kind: ShapeKind.Circle;
+                                radius: number;
+                            }
+                            interface Square {
+                                kind: ShapeKind.Square;
+                                sideLength: number;
+                            }
+                            
+                            let c: Circle = {
+                                kind: ShapeKind.Square,
+                                //    ~~~~~~~~~~~~~~~~ Error!
+                                radius: 100,
+                            }                                
+                        </code>
+                    </pre>
+                </section>
+            </section>
+            <!-- Typescript Generics -->
+            <section>
+                <h2>Typescript Generics</h2>
+                <section>
+                    <h3>The problem</h3>
+                    Create a Typescript function which returns the object it gets as arg
+                </section>
+                <section>
+                    <h3>Naive solution</h3>
+                    <pre>
+                        <code data-trim data-noescape class="js">
+                            function identity(arg: any): any {
+                                return arg;
+                            }
+
+                            let output = identity("myString");
+                        </code>
+                    </pre>
+                    <h4>What is the problem?</h4>
+                </section>
+                <section>
+                    <h3>Solution with generics</h3>
+                    <pre>
+                        <code data-trim data-noescape class="js">
+                            function identity&#60;T&#62;(arg: T): T {
+                                    return arg;
+                                }
+                            let output = identity&#60;string&#62;("myString");
+                            console.log(typeof(output));
+                            output = 14; // Error: Type '14' is not assignable to type 'string'
+                        </code>
+                    </pre>
+                </section>
+            </section>
+            <!-- TypeScript Decorators -->
+            <section>
+                <h2>TypeScript Decorators</h2>
+                <section>
+                    <br>
+                    <p>Instead of wrapping the function with another function, we can use decorators</p>
+                    <pre>
+                        <code data-trim data-noescape class="js">
+                            function f() {
+                                console.log("f(): evaluated");
+                                return function (target, propertyKey: string, descriptor: PropertyDescriptor) {
+                                    console.log("f(): called");
+                                }
+                            }
+                            function g() {
+                                console.log("g(): evaluated");
+                                return function (target, propertyKey: string, descriptor: PropertyDescriptor) {
+                                    console.log("g(): called");
+                                }
+                            }
+                            class C {
+                                @f()
+                                @g()
+                                method() {}
+                            }
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <h3>Evaluation</h3>
+                    <div class="fragment">    
+                        <pre>
+                            <code data-trim data-noescape class="js">
+                                f(): evaluated
+                                g(): evaluated
+                                g(): called
+                                f(): called
+                            </code>
+                        </pre>
+                    </div>
+                </section>
+            </section>
+            <!-- Node.js with Typescript -->
+            <section>
+                <h2>Node.js with Typescript</h2>
+                <section>
+                    <p>yarn add @types/node</p>
+                    <p>yarn add ts-node --> cli</p>
+                    <p>Add library types: <a href="https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types">DefinitelyTyped</a></p>
+                    <p>Use typescript 'modules' and 'export' to define node modules</p>
+                </section>
+                <section>
+                    <h3>.bind</h3>
+                    <pre>
+                        <code data-trim data-noescape class="js">
+                            export class ItemsController {
+                                constructor() {
+                                    this.get = this.get.bind(this);
+                                    this.put = this.put.bind(this);
+                                    this.post = this.post.bind(this);
+                                }
+                            }
+
+                            import { ItemsController } from './items.controller';
+                            const itemsController = new ItemsController();
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <h3>.bind</h3>
+                    <pre>
+                        <code data-trim data-noescape class="js">
+                            var myObj = {
+                                specialFunction: function () {console.log("a");},
+                                anotherSpecialFunction: function () {console.log("b");},
+                                getAsyncData: function (cb) {
+                                    cb();
+                                },
+                                render: function () {
+                                    var that = this;
+                                    this.getAsyncData(function () {
+                                        that.specialFunction();
+                                        that.anotherSpecialFunction();
+                                    });
+                                }
+                            };
+                            myObj.render();
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <h3>.bind</h3>
+                    <pre>
+                        <code data-trim data-noescape class="js">
+                            var myObj = {
+                                specialFunction: function () {console.log("a");},
+                                anotherSpecialFunction: function () {console.log("b");},
+                                getAsyncData: function (cb) {
+                                    cb();
+                                },
+                                render: function () {
+                                    this.getAsyncData(function () {
+                                        this.specialFunction();
+                                        this.anotherSpecialFunction();
+                                    }.bind(this));
+                                }
+                            };
+                            myObj.render();
+                        </code>
+                    </pre>
+                </section>
+            </section>
+            <!-- exercise -->
+            <section>
+                <table>
+                    <tr>
+                        <td style="width:50%">
+                            <img src="../assets/exercise-time.png"/>
+                        </td>
+                        <td style="vertical-align: top; font-size:16px">
+                            <ul style="list-style-type: none">
+                                <li>Build models which will be used in next exercises
+                                    <ul>
+                                        <li>Interface for <code>ItemsController</code> class which will include: create/list/show/delete functions</li>
+                                        <li>Class ItemController which will implements this interface</li>
+                                        <li>Model for <code>Item</code> with the following: name: string, description: string, price: number, address: string, isInStock: boolean, amount: number, creator: string, itemType: ItemType</li>
+                                        <li>Enum for itemType which declare categories of items</li>
+                                        <li>App class which will be run by Node and print all data (create an instance of Item and console.log it)</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+            </section>
+            </div>
+        </div>
+        <script src="../assets/lib/js/head.min.js"></script>
+        <script src="../assets/js/reveal.js"></script>
+        <script>
+            Reveal.initialize({
+                history: true,
+                dependencies: [
+                    { src: '../assets/plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                    { src: '../assets/plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                    { src: '../assets/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+                ]
+            });
+            let currentSlide;
+            Reveal.addEventListener('slidechanged', function (event) {
+                currentSlide = event.indexh;
+            });
+
+            Reveal.addEventListener('fragmentshown', function (event) {
+                if (event.fragment.id === 'rest_video_fragment') {
+                    document.getElementById('rest_video').play()
+                }
+                console.log(event);
+            });
+
+            Reveal.addEventListener('fragmenthidden', function (event) {
+                if (event.fragment.id === 'rest_video_fragment') {
+                    const video = document.getElementById('rest_video');
+                    video.pause();
+                    video.currentTime = 0;
+                }
+                console.log(event);
+            });
+        </script>
+</body>
+</html>
