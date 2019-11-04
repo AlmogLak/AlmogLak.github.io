@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MongoDB</title>
+    <link rel="stylesheet" href="../assets/css/reveal.css">
+    <link rel="stylesheet" href="../assets/css/theme/league.css">
+    <link rel="stylesheet" href="../assets/lib/css/zenburn.css">
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+    <div class="att_logo"></div>
+    <div class="mongo-db-title"></div>
+    <div class="reveal">
+        <div class="slides">
+            <!-- MongoDB Fundamentals -->
+            <section>
+                <h1>MongoDB Fundamentals</h1>
+                <p style="font-size: 30px;">Module 1-3</p>
+                <sub>By Almog Laktivi</sub>
+            </section>
+            <!-- Agenda -->
+            <section>
+                <h2>Agenda</h2>
+                <div>
+                    <p>Introduction</p>
+                    <p>Installation & dev-env</p>
+                    <p>MongoDB Shell</p>
+                    <p>Basic CRUD</p>
+                    <p>MongoDB Compass</p>
+                </div>
+            </section>
+            <!-- Course objectives -->
+            <section>
+                <table>
+                    <tr>
+                        <td>
+                            <h2>Course objectives</h2>
+                            <p>Installing MongoDB on your computer</p>
+                            <p>Doing with MongoDB shell basic CRUD</p>
+                            <p>Installing and working with MongoDB Compass</p>
+                        </td>
+                        <td>
+                            <div class="what-will-you-know"></div>
+                        </td>
+                    </tr>
+                </table>
+            </section>
+            <!-- Introduction -->
+            <section>
+                <h2>Introduction</h2>
+                <section>
+                    <h2>Why should we learn it?</h2>
+                    <div class="fragment"><p>#1 NOSQL (non-relational) DB</p></div>
+                    <div class="fragment"><p style="font-size:30px;">Document DB, Graph stores, Key value stores, Wide column stores</p></div>
+                    <div class="fragment"><p>Schema less</p></div>
+                    <div class="fragment"><p>Open source</p></div>
+                    <div class="fragment"><p>Large community support</p></div>
+                </section>
+                <section>
+                    <h2>Why should we learn it?</h2>
+                    <div class="fragment"><p>Scalability capabilities – ease of scale up/down</p></div>
+                    <div class="fragment"><p>Big data capabilities</p></div>
+                    <div class="fragment"><p>Both AWS and AZURE support as service (Atlas)</p></div>
+                </section>
+                <section>
+                    <div class="fragment"><p>From the word hu<u>mongo</u>us</p></div>
+                    <div class="fragment"><p>Built in C, C++ and JavaScript</p></div>
+                    <div class="fragment"><p><a href="https://docs.mongodb.com">Very well-documented documentation</a></p></div>
+                    <div class="fragment"><p>First place on the NOSQL databases usage</p></div>
+                    <div class="fragment">
+                        <p>Drivers for most popular programming languages</p>
+                        <img src="https://image.slidesharecdn.com/mongodbdrivers-140618025044-phpapp01/95/how-different-are-mongodb-drivers-10-638.jpg" width="230" alt="">
+                    </div>
+                </section>
+            </section>
+            <!-- Install MongoDB -->
+            <section>
+                <h2>Install MongoDB</h2>
+                <section>
+                    <h3>Windows</h3>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/wcx3f0eUiAw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <p>
+                        <a href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/">MongoDB official installation tutorial</a>
+                    </p>
+                    <p>
+                        <a href="https://git-scm.com/download/win">GitBash - Recommended terminal client for windows</a>
+                    </p>
+                </section>
+                <section>
+                    <h3>Mac</h3>
+                    <p>
+                        <a href="https://treehouse.github.io/installation-guides/mac/mongo-mac.html">MongoDB installation tutorial</a>
+                    </p>
+                    </section>
+            </section>
+            <!-- initial environment -->
+            <section>
+                <h2>Create initial environment</h2>
+                <section>
+                    <p>Mac / Linux requires few initial steps:</p>
+                    <div class="fragment"><pre><code data-trim data-noescape class="bash">mkdir -p /data/db</code></pre></div>
+                    <div class="fragment"><pre><code data-trim data-noescape class="bash">sudu chown -R `id -un` /data/db</code></pre></div>
+                </section>
+                <section>
+                    <p>Running MongoDB server</p>
+                    <div class="fragment"><pre><code data-trim data-noescape class="bash">mongod</code></pre></div>
+                </section>
+                <section>
+                    <p>Running MongoDB shell client</p>
+                    <div class="fragment"><pre><code data-trim data-noescape class="bash">mongo</code></pre></div>
+                </section>
+                <section>
+                    <p>Sanity check</p>
+                    <div class="fragment"><pre><code data-trim data-noescape class="bash">version()</code></pre></div>
+                    <div class="fragment"><pre><code data-trim data-noescape class="bash">show dbs</code></pre></div>
+                </section>
+            </section>
+            <!-- Demo Time -->
+            <section>
+                <h2>Demo Time</h2>
+                <img src="https://media.giphy.com/media/QAaR9zoMUb8814WJ6a/giphy.gif" alt="">
+            </section>
+            <!-- Next Module -->
+            <section>
+                <a href="../module-4/index.html">Next Module</a>
+            </section>
+        </div>
+    </div>
+    <script src="../assets/lib/js/head.min.js"></script>
+    <script src="../assets/js/reveal.js"></script>
+    <!-- Reveal.js init script -->
+    <script>
+        Reveal.initialize({
+            history: true,
+            dependencies: [
+                { src: '../assets/plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: '../assets/plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: '../assets/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+            ]
+        });
+    </script>
+</body>
+</html>

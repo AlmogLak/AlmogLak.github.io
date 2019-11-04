@@ -1,0 +1,16 @@
+{
+  "name": "MongoDB-Fundamentals",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Almog Laktivi <al942u@att.com>",
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^5.0.0",
+    "http-server": "^0.11.1",
+    "reveal.js": "^3.6.0",
+    "simple-autoreload-server": "0.2.7"
+  },
+  "scripts": {
+    "start": "concurrently \"autoreload-server\""
+  }
+}

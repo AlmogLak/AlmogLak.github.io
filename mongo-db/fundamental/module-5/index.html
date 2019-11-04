@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MongoDB</title>
+    <link rel="stylesheet" href="../assets/css/reveal.css">
+    <link rel="stylesheet" href="../assets/css/theme/league.css">
+    <link rel="stylesheet" href="../assets/lib/css/zenburn.css">
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+    <div class="att_logo"></div>
+    <div class="mongo-db-title"></div>
+    <div class="reveal">
+        <div class="slides">
+            <!-- MongoDB Fundamentals -->
+            <section>
+                <h1>MongoDB Fundamentals</h1>
+                <p style="font-size: 30px;">Module 5</p>
+                <sub>By Almog Laktivi</sub>
+            </section>
+            <!-- Introduction -->
+            <section>
+                <section>
+                    <sub>MongoDB Structure</sub>
+                    <img style="width: 65%; background: transparent; border: 0px; box-shadow: 0 0 0px;" src="../assets/mongo-db-structure.png">
+                    <a href="http://bsonspec.org/">Saved with BSON</a>
+                </section>
+                <section>
+                    <sub>Documents database vs relational database(RDBMS)</sub>
+                    <img style="background: transparent; border: 0px; box-shadow: 0 0 0px;" src="../assets/sql-vs-nosql.png">
+                </section>
+                <section>
+                    <h3>Documents database advantages</h3>
+                    <div class="fragment"><p>Rich data model -> represent more naturally</p></div>
+                    <div class="fragment"><p>Not using joins (is it?)</p></div>
+                    <div class="fragment"><p>Performance oriented (BSON, Binary TCP)</p></div>
+                    <div class="fragment"><p>Dynamic schema (Comes with responsibility)</p></div>
+                </section>
+                <section>
+                    <h3>Is MongoDB Schemaless?</h3>
+                    <p>MongoDB has one schema rule: _id is mandatory</p>
+                    <p>By default is instance of the type 'ObjectId'</p>
+                    <img style="width: 65%; background: transparent; border: 0px; box-shadow: 0 0 0px;" src="../assets/object-id.png">
+                </section>
+                <section>
+                    <h3>Collections in MongoDB</h3>
+                    <div class="fragment"><p>Acts as "tables"</p></div>
+                    <div class="fragment"><p>Created automatically if not exists OR by db.createCollection()</p></div>
+                    <div class="fragment"><p>Different schema for each document (every document is individual)</p></div>
+                    <div class="fragment"><p>.validate() – scans the collection data structure for correctness</p></div>
+                </section>
+            </section>
+            <!-- MongoDB CRUD -->
+            <section>
+                <h2>MongoDB CRUD</h2>
+                <section>
+                    <h3>Create</h3>
+                    <pre>
+                        <code data-trim data-noescape class="bash">
+                            use att
+                            db.workers.insert({_id: "al942u", first: "Almog", last: "Laktivi"})
+                            db.workers.insert({_id: new ObjectId(), first: "Almog", last: "Laktivi"})
+                            db.workers.insert({first: "Almog", last: "Laktivi"})
+                        </code>
+                    </pre>
+                    <p>db.workers.insertMany([])</p>
+                    <p>db.workers.insertOne({})</p>
+                </section>
+                <section>
+                    <h3>Read</h3>
+                    <pre>
+                        <code data-trim data-noescape class="bash">
+                            use att
+                            db.workers.findOne() // Already with .pretty() function
+                            db.workers.find({_id: "al942u"}) // $eq operator
+                            db.workers.find({_id: "al942u"}).pretty()
+                            db.workers.find({}).pretty()
+                            db.workers.find({_id: {$eq: "al942u"}}).pretty()
+                            db.workers.find({_id: {$in: ["al942u", "na587r"]}}).limit(5).pretty()
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <h3>Update</h3>
+                    <pre>
+                        <code data-trim data-noescape class="bash">
+                            use att
+                            db.workers.update({_id: "al942u"}, {$set: {age: 31}}) // uses Mongo query mechanism
+                        </code>
+                    </pre>
+                    <p>db.workers.updateOne({query}, {set}) - same as update with multi=false</p>
+                    <p>db.workers.updateMany({query}, {set}) - same as update with multi=true</p>
+                </section>
+                <section>
+                    <h3>Delete</h3>
+                    <pre>
+                        <code data-trim data-noescape class="bash">
+                            use att
+                            db.workers.remove({_id: "al942u"})
+                            db.workers.deleteOne({_id: "al942u"}) // 'remove' with justOne option set to true
+                            db.workers.deleteMany({_id: "al942u"}) // 'remove' with justOne option set to false
+                        </code>
+                    </pre>
+                </section>
+            </section>
+            <!-- Demo Time -->
+            <section>
+                <h2>Demo Time</h2>
+                <img src="https://media.giphy.com/media/QAaR9zoMUb8814WJ6a/giphy.gif" alt="">
+            </section>
+            <!-- Excercise Time -->
+            <section>
+                <h2>Excercise Time</h2>
+                <table>
+                    <tr>
+                        <td>
+                            <div style="height: 400px; font-size: 20px;">
+                                <ul>
+                                    <li>Find one document stored on 'bank_data' collection  to see what is the form of the schema</li>
+                                    <li>Insert your details as a new document into 'bank_data' collection</li>
+                                    <li>Insert my data as a new document into 'bank_data' collection (one/two queries?)</li>
+                                    <li>Find how much clients with the name 'MICHAEL' we have on our bank,
+                                        Then, return the first 5</li>
+                                    <li>Update all of them to be VIP clients by setting the field 'client_level' to 'VIP'</li>
+                                    <li>Because you are the developer of this bank system, update your account to be 'VIP' as well</li>
+                                    <li>Delete the two accounts we've added in one query(yours and mine)</li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td><img src="https://media.giphy.com/media/UvvK8rOSHPxgjo9ryD/giphy.gif"></tr>
+                    </tr>
+                </table>
+            </section>
+            <!-- Next Module -->
+            <section>
+                <a href="../module-6/index.html">Next Module</a>
+            </section>
+        </div>
+    </div>
+    <script src="../assets/lib/js/head.min.js"></script>
+    <script src="../assets/js/reveal.js"></script>
+    <!-- Reveal.js init script -->
+    <script>
+        Reveal.initialize({
+            history: true,
+            dependencies: [
+                { src: '../assets/plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: '../assets/plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: '../assets/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+            ]
+        });
+    </script>
+</body>
+</html>

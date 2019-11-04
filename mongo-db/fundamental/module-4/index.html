@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MongoDB</title>
+    <link rel="stylesheet" href="../assets/css/reveal.css">
+    <link rel="stylesheet" href="../assets/css/theme/league.css">
+    <link rel="stylesheet" href="../assets/lib/css/zenburn.css">
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+    <div class="att_logo"></div>
+    <div class="mongo-db-title"></div>
+    <div class="reveal">
+        <div class="slides">
+            <!-- MongoDB Fundamentals -->
+            <section>
+                <h1>MongoDB Fundamentals</h1>
+                <p style="font-size: 30px;">Module 4</p>
+                <sub>By Almog Laktivi</sub>
+            </section>
+            <!-- MongoDB Shell Client -->
+            <section>
+                <h2>MongoDB Shell Client</h2>
+                <section>
+                    <div>
+                        <p>JavaScript interface</p>
+                        <p>Built mainly for administrative operations</p>
+                        <p>Similar to driver capabilities</p>
+                    </div>
+                </section>
+                <section>
+                    <h3>Keys and shortcusts</h3>
+                    <div class="fragment"><pre><code data-trim data-noescape class="js">db</code></pre></div>
+                    <div class="fragment"><pre><code data-trim data-noescape class="js">show dbs/collections</code></pre></div>
+                    <div class="fragment"><pre><code data-trim data-noescape class="js">use {database}</code></pre></div>
+                    <div class="fragment"><pre><code data-trim data-noescape class="js">db.dropDatabase()</code></pre></div>
+                    <div class="fragment"><pre><code data-trim data-noescape class="js">db.bank_data.find().pretty()</code></pre></div>
+                </section>
+                <section>
+                    <h3>Keys and shortcusts</h3>
+                    <div class="fragment"><pre><code data-trim data-noescape class="js">cls</code></pre></div>
+                    <div class="fragment"><pre><code data-trim data-noescape class="js">mongo script-file.js</code></pre></div>
+                    <div class="fragment"><pre><code data-trim data-noescape class="js">mongo --eval 'db.collection.find().forEach(printjson)'</code></pre></div>
+                    <div class="fragment"><pre><code data-trim data-noescape class="js">mongodump --db {database}</code></pre></div>
+                    <div class="fragment"><pre><code data-trim data-noescape class="js">help</code></pre></div>
+                </section>
+                <section>
+                    <h3>Import Data</h3>
+                    <div>
+                        <pre>
+                            <code data-trim data-noescape class="js">
+                                    mongoimport {path-to-file}/file.json --jsonArray --db {new-db-name} --collection {new-collection-name}
+                            </code>
+                        </pre>
+                    </div>
+                    <a href="https://docs.mongodb.com/manual/reference/program/mongoimport/">Read about the options</a>
+                </section>
+                <section>
+                    <h3>Export Data</h3>
+                    <div>
+                        <pre>
+                            <code data-trim data-noescape class="js">
+                                mongoexport --collection={collection-name} --db={db-name} --out={path-to-file}/file.json
+                            </code>
+                        </pre>
+                    </div>
+                    <a href="https://docs.mongodb.com/manual/reference/program/mongoexport/">Read about the options</a>
+                </section>
+            </section>
+            <!-- initial environment -->
+            <section>
+                <h2>Excercise Time</h2>
+                <table>
+                    <tr>
+                        <td>
+                            <div style="height: 400px;">
+                                <ul>
+                                    <li>Download bank database from <a href="https://github.com/sedouard/mongodb-mva/tree/master/module2_getting_started">here</a></li>
+                                    <li>Import it with 'att_bank' as the database name and 'bank_data' as the collection name</li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td><img src="https://media.giphy.com/media/UvvK8rOSHPxgjo9ryD/giphy.gif"></tr>
+                    </tr>
+                </table>
+            </section>
+            <!-- Demo Time -->
+            <section>
+                <h2>Demo Time</h2>
+                <img src="https://media.giphy.com/media/QAaR9zoMUb8814WJ6a/giphy.gif" alt="">
+            </section>
+            <!-- Next Module -->
+            <section>
+                <a href="../module-5/index.html">Next Module</a>
+            </section>
+        </div>
+    </div>
+    <script src="../assets/lib/js/head.min.js"></script>
+    <script src="../assets/js/reveal.js"></script>
+    <!-- Reveal.js init script -->
+    <script>
+        Reveal.initialize({
+            history: true,
+            dependencies: [
+                { src: '../assets/plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: '../assets/plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: '../assets/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+            ]
+        });
+    </script>
+</body>
+</html>
