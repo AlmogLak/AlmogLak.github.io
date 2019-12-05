@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MongoDB</title>
+    <link rel="stylesheet" href="../assets/css/reveal.css">
+    <link rel="stylesheet" href="../assets/css/theme/league.css">
+    <link rel="stylesheet" href="../assets/lib/css/zenburn.css">
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+    <div class="att_logo"></div>
+    <div class="mongo-db-title"></div>
+    <div class="reveal">
+        <div class="slides">
+            <!-- MongoDB Advanced -->
+            <section>
+                <h1>MongoDB Advanced</h1>
+                <p style="font-size: 30px;">Module 2</p>
+                <sub>By Almog Laktivi</sub>
+            </section>
+            <!-- Advanced queries – Insert/Update -->
+            <section>
+                <h2>Advanced queries – Insert/Update</h2>
+                <section>
+                    <h3>Insert</h3>
+                    <div class="fragment"><p>Inserts new document into collection</p></div>
+                    <div class="fragment"><p>Supports insert of array of documents (or db.coll.insertOne)</p></div>
+                    <div class="fragment"><p>By default insert the documents ordered</p></div>
+                </section>
+                <section>
+                    <h3>Insert Examples</h3>
+                    <pre>
+                        <code data-trim data-noescape class="bash">
+                            use att
+                            db.workers.insert({_id: "al942u", first: "Almog", last: "Laktivi"})
+                            db.workers.insert({_id: new ObjectId(), first: "Almog", last: "Laktivi"})
+                            db.workers.insert({first: "Almog", last: "Laktivi"})
+                        </code>
+                    </pre>
+                    <p>db.workers.insertMany([])</p>
+                    <p>db.workers.insertOne({})</p>
+                </section>
+                <section>
+                    <h3>Update</h3>
+                    <div class="fragment"><p>Modifies existing document/s in a collection</p></div>
+                    <div class="fragment"><p>Query mechanism same as of .find() command</p></div>
+                    <div class="fragment"><p>Update with internal operators</p></div>
+                    <div class="fragment"><p>Lets you upsert, update multi or one documents</p></div>
+                </section>
+                <section>
+                    <h3>Update Operators</h3>
+                    <div class="fragment">
+                        <p>$set – Adds/changes specific field in documents</p>
+                        <code class="inline">db.coll.update({}, {$set: {field: "bibi"}})</code></br>
+                        <code class="inline">db.coll.update({}, {$set: {field: "bibi2"}}, {multi: true})</code></br>
+                        <code class="inline">db.coll.update({_id: "not_exists"}, {$set: {field: "almog"}}, {upsert: true})</code>
+                    </div>
+                    <div class="fragment">
+                        <p>$unset – Removes specific field from documents</p>
+                        <code class="inline">db.coll.update({}, {$unset: {adrs: ""})</code>
+                    </div>
+                </section>
+                <section>
+                    <h3>Update Operators</h3>
+                    <div class="fragment">
+                        <p>$rename – Change the name of the field</p>
+                        <code class="inline">db.coll.update({},{$rename: {address: "adrs"}})</code>
+                    </div>
+                    <div class="fragment">
+                        <p>$inc – Increments value of field</p>
+                        <code class="inline">db.coll.update({},{$inc: {quantity: -2,"metrics.orders": 1}})</code>
+                    </div>
+                    <div class="fragment">
+                        <p>$mul – multiples the value of the field</p>
+                    </div>
+                </section>
+                <section>
+                    <h3>Update Operators</h3>
+                    <div class="fragment">
+                        <p>$min/$max – update the field if the value is less/greater than the existing one</p>
+                        <code class="inline">db.coll.update({},{{$min: {lowScore: 150}})</code></br>
+                        <code class="inline">db.coll.update({},{{$max: {highScore: 999}})</code>
+                    </div>
+                    <div class="fragment">
+                        <p>$currentDate – Set the field value to the current date</p>
+                        <a href="https://docs.mongodb.com/manual/reference/operator/update/currentDate/"><code class="inline">db.coll.update({},{$currentDate: {"cancellation.date":{$type:"timestamp"}}})</code></a>
+                    </div>
+                </section>
+                <section>
+                    <h3>Array Update Operators</h3>
+                    <div class="fragment">
+                        <p>$push – Creates array/adds element into array ($each – for insert many)</p>
+                        <code class="inline">db.coll.update({},{$push: {accounts: {a: "b"}}})</code></br>
+                    </div>
+                    <div class="fragment">
+                        <p>$addToSet – Like $push but without duplications</p>
+                        <code class="inline">db.coll.update({},{$addToSet: {accounts: {a: "b"}}})</code></br>
+                    </div>
+                </section>
+                <section>
+                    <h3>Array Update Operators</h3>
+                    <div class="fragment">
+                        <p>$pull – Remove all instances from array by list of items to be removed (query based unlike $pullAll)</p>
+                        <code class="inline">db.coll.update({},{$pull: {arrField: {$in: [1]}}})</code></br>
+                    </div>
+                    <div class="fragment">
+                        <p>$pop – removes the first/last item of an array</p>
+                        <code class="inline">db.coll.update({},{$pop: {accounts: -1}})</code></br>
+                    </div>
+                    <div class="fragment">
+                        <p>Operator modifiers: $each, $slice, $sort, $position</p>
+                        <code class="inline">db.coll.update({},{$push: {arrField: {$each: [1,3,4,5,6]}}})</code></br>
+                    </div>
+                </section>
+                <section>
+                    <h3>findAndModify</h3>
+                    <div class="fragment"><p>Modify and <b>returns</b> a single document</p></div>
+                    <div class="fragment"><p>By default returns the old document – can be set to return the updated one by adding by the ’new’ option</p></div>
+                    <div class="fragment">
+                        <pre>
+                            <code data-trim data-noescape class="bash">
+                                use att
+                                db.coll.findAndModify({query: {name: "almog"}, update: {$set: {field: "almog1"}}})
+                                db.coll.findAndModify({query: {name: "almog"}, update: {$set: {field: "almog2"}}, new: true})
+                            </code>
+                        </pre>
+                    </div>
+                </section>
+            </section>
+            <!-- Demo Time -->
+            <section>
+                <h2>Demo Time</h2>
+                <img src="https://media.giphy.com/media/QAaR9zoMUb8814WJ6a/giphy.gif" alt="">
+            </section>
+            <!-- Excercise Time -->
+            <section>
+                <h2>Excercise Time</h2>
+                <table>
+                    <tr>
+                        <td>
+                            <div style="height: 400px; font-size: 20px;">
+                                <ul>
+                                    <li>Add new field to all documents named ‘address’. Default value is ‘TLV’</li>
+                                    <li>Find ‘JAMES WHITE’ accounts and rename the ‘address’ field into ‘adrs’</li>
+                                    <li>Remove the ‘adrs’ field and add instead ‘last_action’ field with the
+                                         current date on ’JAMES WHITE’ document (All in one command)</li>
+                                    <li>Push to JAMES WHITE document new account(<code class="inline">{"account_type": "Checking", "account_balance": 100000.0, "currency": "ILS"}</code>)</li>
+                                    <li>Try to push the same account again using $addToSet</li>
+                                    <li>Remove the first account from JAMES WHITE document (the EURO one)</li>
+                                    <li>Update and return JAMES WHITE updated document by update his name to ‘ALMOG’</li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td><img src="https://media.giphy.com/media/UvvK8rOSHPxgjo9ryD/giphy.gif"></tr>
+                    </tr>
+                </table>
+            </section>
+            <!-- Advanced queries – Retrieve data -->
+            <section>
+                <h2>Advanced queries – Retrieve data</h2>
+                <section>
+                    <h3>find Command</h3>
+                    <code class="inline">db.collection.find({query}, {projection})</code></br>
+                    <div class="fragment"><p>Selects documents in a collection</p></div>
+                    <div class="fragment"><p>Gets two arguments: query and projection</p></div>
+                    <div class="fragment"><p>projection – Optional, specifies the fields to return in the documents that match the query filter</p>
+                    <code class="inline">db.coll.find({name: "Almog"}, {last: 1}).pretty()</code></div>
+                </section>
+                <section>
+                    <h3>Field Operators</h3>
+                    <div class="fragment">
+                        <p>$eq - Specifies equality condition</p>
+                        <code class="inline">db.bank_data.find({last_name: {$eq: "SMITH"}}).pretty()</code></br>
+                    </div>
+                    <div class="fragment">
+                        <p>$ne – Specifies not equality condition</p>
+                        <code class="inline">db.bank_data.find({last_name: {$ne: "SMITH"}}).pretty()</code>
+                    </div>
+                    <div class="fragment">
+                        <p>$exists - Exists matches the documents that contain the field</p>
+                        <code class="inline">db.bank_data.find({age: {$exists: true}}).pretty()</code>
+                    </div>
+                </section>
+                <section>
+                    <h3>Field Operators</h3>
+                    <div class="fragment">
+                        <p>$gt - Field is greater than the specified value</p>
+                        <code class="inline">db.bank_data.find({age: {$gt: 30}}).pretty()</code></br>
+                    </div>
+                    <div class="fragment">
+                        <p>$gte – Like $gt but with equals</p>
+                        <code class="inline">db.bank_data.find({age: {$gte: 31}}).pretty()</code>
+                    </div>
+                    <div class="fragment">
+                        <p>$lt - Field  is less than the specified value</p>
+                        <code class="inline">db.bank_data.find({age: {$lt: 31}}).pretty()</code>
+                    </div>
+                </section>
+                <section>
+                    <h3>Field Operators</h3>
+                    <div class="fragment">
+                        <p>$lte – Like $lt but with equals</p>
+                        <code class="inline">db.bank_data.find({age: {$lte: 30}}).pretty()</code></br>
+                    </div>
+                    <div class="fragment">
+                        <p>$in - Value of a field equals any value in the specified array</p>
+                        <code class="inline">db.bank_data.find({first_name: {$in: ["Almog", "David", "Nir"]}}).pretty()</code>
+                    </div>
+                    <div class="fragment">
+                        <p>$nin - Not equals to every value in the specified array</p>
+                        <code class="inline">db.bank_data.find({first_name: {$nin: ["Almog", "David", "Nir"]}}).pretty()</code>
+                    </div>
+                </section>
+                <section>
+                    <h3>Logical query operators</h3>
+                    <div class="fragment" style="font-size: 22px;"><p>$and - performs a logical AND operation</p></div>
+                    <div class="fragment" style="font-size: 22px;"><p>$not - performs a logical NOT operation</p></div>
+                    <div class="fragment" style="font-size: 22px;"><p>$nor - performs a logical NOR operation</p></div>
+                    <div class="fragment" style="font-size: 22px;"><p>$or - performs a logical OR operation</p></div>
+                    <div class="fragment">
+                        <pre>
+                            <code data-trim data-noescape class="bash">
+                                db.inventory.find( {
+                                    $and : [
+                                        { $or : [ { price : 0.99 }, { price : 1.99 } ] },
+                                        { $or : [ { sale : true }, { qty : { $lt : 20 } } ] }
+                                    ]
+                                })
+                            </code>
+                        </pre>
+                    </div>
+                </section>
+                <section>
+                    <h3>Logical query operators</h3>
+                    <div class="fragment" style="font-size: 22px;"><p>$all – Matches arrays that contain all elements specified in the query</p></div>
+                    <div class="fragment" style="font-size: 22px;"><p>$elemMatch – Selects documents if element in the array field matches all the specified conditions</p></div>
+                    <div class="fragment" style="font-size: 22px;"><p>$size - Selects documents if the array field is a specified size</p></div>
+                </section>
+                <section>
+                    <h3>Evaluation query operators</h3>
+                    <div class="fragment" style="font-size: 22px;"><p>$mod - Performs a modulo operation on the value of a field and selects documents with a specified result</p></div>
+                    <div class="fragment" style="font-size: 22px;"><p>$regex - Selects documents where values match a specified regular expression</p></div>
+                    <div class="fragment" style="font-size: 22px;"><p>$text - Performs text search</p></div>
+                    <div class="fragment" style="font-size: 22px;"><p>$where - Matches documents that satisfy a JavaScript expression</p></div>
+                </section>
+                <section>
+                    <h3>Dot notation</h3>
+                    <div class="fragment" style="font-size: 22px;"><p>Used to access the elements of an array or embedded document</p></div>
+                    <div class="fragment" style="font-size: 22px;"><p>Arrays – by zero based index position</p></div>
+                    <div class="fragment" style="font-size: 22px;"><p>Embedded document (object field) – by the embedded document field name</p></div>
+                    <div class="fragment"><img src="../assets/dot-notation.png"></div>
+                </section>
+                <section>
+                    <h3>Cursor</h3>
+                    <div class="fragment" style="font-size: 22px;"><p>Definition: control structure that enables traversal over the records in a database</p></div>
+                    <div class="fragment" style="font-size: 22px;"><p>.find command returns a cursor</p></div>
+                    <div class="fragment">
+                        <pre>
+                            <code data-trim data-noescape class="bash">
+                                var cursor = db.bank_data.find({accounts: {$size: 3}, "first_name": "JAMES"});
+                                var counter = 0;
+                                cursor.length(); //Will reset the cursor because the counting iterates the cursor
+                                while(cursor.hasNext()){
+                                    var doc = cursor.next();
+                                        if(doc && doc.accounts) {
+                                            counter += doc.accounts.length;
+                                        }
+                                    }
+                            </code>
+                        </pre>
+                    </div>
+                </section>
+                <section>
+                    <h3>Aggregation</h3>
+                    <div class="fragment" style="font-size: 22px;"><p>Process which information is gathered and expressed in a summary form</p></div>
+                    <div class="fragment" style="font-size: 22px;"><p>In mongoDB: values of multiple documents are grouped together to form a single value of more significant meaning or measurement</p></div>
+                    <div class="fragment" style="font-size: 22px;"><p>Not using .find cursor but .aggregate with the ability of querying by $match operator</p></div>
+                    <div class="fragment" style="font-size: 22px;"><p>Aggregation pipeline stages have <a href="https://docs.mongodb.com/manual/core/aggregation-pipeline-limits/#agg-memory-restrictions">maximum memory use limit</a>, in contrast to .find</p></div>
+                    <code class="fragment inline">db.coll.aggregate([{ -stage- }, ...])</code>
+                </section>
+                <section>
+                    <h3><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/">Aggregation Operators</a></h3>
+                    <div class="fragment" style="font-size: 22px;">
+                        <p>$match - Filters and gets the documents that match the specified conditions</p>
+                        <code class="inline">db.bank_data.aggregate([{$match: {last_name: "WHITE", accounts: {$size: 4}}}, {$skip: 5}]).pretty()</code>
+                    </div>
+                    <div class="fragment" style="font-size: 22px;">
+                        <p>$unwind – Deconstructs an array field from the input objects to output a document for each object (notice the prefix)</p>
+                        <code class="inline">db.bank_data.aggregate([{$limit: 1}, {$unwind: "$accounts"}]).pretty()</code>
+                    </div>
+                    <div class="fragment" style="font-size: 22px;">
+                        <p>$sort – Sorts all input documents (ASC and DESC), exists also for .find</p>
+                        <code class="inline">db.bank_data.aggregate([{$match: {last_name: "WHITE", accounts: {$size: 4}}}, {$sort: {first_name: 1}}]).pretty()</code>
+                    </div>
+                </section>
+                <section>
+                    <h3><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/">Aggregation Operators</a></h3>
+                    <div class="fragment" style="font-size: 22px;">
+                        <p>$group – Groups documents by some specified expression ($sum, $avg, $first, $last, $max, $min, $push, $addToSet and so on…)</p>
+                        <code class="inline">db.bank_data.aggregate([{$limit:5}, {$unwind: "$accounts"}, {$group: {_id: null, avgBalance: {$avg: "$accounts.account_balance"}}}]).pretty()</code>
+                    </div>
+                    <div class="fragment" style="font-size: 22px;">
+                        <p>$limit – Limits the number of documents, exists also for .find</p>
+                        <code class="inline">db.bank_data.aggregate([{$limit: 1}, {$unwind: "$accounts"}]).pretty()</code>
+                    </div>
+                    <div class="fragment" style="font-size: 22px;">
+                        <p>$skip – Skips over the specified number of documents, exists also for .find</p>
+                        <code class="inline">db.bank_data.aggregate([{$match: {last_name: "WHITE", accounts: {$size: 4}}}, {$skip: 5}]).pretty()</code>
+                    </div>
+                </section>
+                <section>
+                    <h3><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/">Aggregation Operators</a></h3>
+                    <div class="fragment" style="font-size: 22px;">
+                        <p>$project – Specifies the fields to return in the documents</p>
+                        <code class="inline">db.bank_data.aggregate([{$match: {last_name: "WHITE", accounts: {$size: 4}}}, {$project: {first_name: 1}}]).pretty()</code>
+                    </div>
+                    <div class="fragment" style="font-size: 22px;">
+                        <p>$count – Returns a document that contains a count of the number of specified object</p>
+                        <code class="inline">db.bank_data.aggregate([{$unwind: "$accounts"}, {$count: "totalAccounts"}]).pretty()</code>
+                    </div>
+                    <div class="fragment" style="font-size: 22px;">
+                        <p><span style="color: red;">$lookup</span> – Performs a left outer join to an unsharded collection in the same database</p>
+                    </div>
+                </section>
+            </section>
+            <!-- Excercise Time -->
+            <section>
+                <h2>Excercise Time</h2>
+                <table>
+                    <tr>
+                        <td>
+                            <div style="height: 400px; font-size: 20px;">
+                                <ul>
+                                    <li>Find how much accounts is without the first name JAMES</li>
+                                    <li>Find all the accounts that their age is greater or equals to 25</li>
+                                    <li>Find how much accounts has the `age` field</li>
+                                    <li>Use cursor to sum the number of accounts for all customers with the name JAMES</li>
+                                    <li>Use aggregation function to find how much accounts there are which the owner first name is not DAVID nor [YOUR NAME]</li>
+                                    <li>For the match from the last section, find how many accounts there are, and also what is the max account balance (use $unwind and $group)</li>
+                                    <li>For the match from the last section, project the first name of the owner and sort it by that name</li>
+                                    <li>Use the project to hide the _id and present this list distinctly</li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td><img src="https://media.giphy.com/media/UvvK8rOSHPxgjo9ryD/giphy.gif"></tr>
+                    </tr>
+                </table>
+            </section>
+            <!-- Demo Time -->
+            <section>
+                <h2>Demo Time</h2>
+                <img src="https://media.giphy.com/media/QAaR9zoMUb8814WJ6a/giphy.gif" alt="">
+            </section>
+            <!-- Next Module -->
+            <section>
+                <a href="../module-3/index.html">Next Module</a>
+            </section>
+        </div>
+    </div>
+    <script src="../assets/lib/js/head.min.js"></script>
+    <script src="../assets/js/reveal.js"></script>
+    <!-- Reveal.js init script -->
+    <script>
+        Reveal.initialize({
+            history: true,
+            dependencies: [
+                { src: '../assets/plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: '../assets/plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: '../assets/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+            ]
+        });
+    </script>
+</body>
+</html>

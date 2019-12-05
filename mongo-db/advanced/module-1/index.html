@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MongoDB</title>
+    <link rel="stylesheet" href="../assets/css/reveal.css">
+    <link rel="stylesheet" href="../assets/css/theme/league.css">
+    <link rel="stylesheet" href="../assets/lib/css/zenburn.css">
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+    <div class="att_logo"></div>
+    <div class="mongo-db-title"></div>
+    <div class="reveal">
+        <div class="slides">
+            <!-- MongoDB Advanced -->
+            <section>
+                <h1>MongoDB Advanced</h1>
+                <p style="font-size: 30px;">Module 1</p>
+                <sub>By Almog Laktivi</sub>
+            </section>
+            <!-- Agenda -->
+            <section>
+                <h2>Agenda</h2>
+                <div>
+                    <p>Introduction</p>
+                    <p>Last Course Overview</p>
+                    <p>Advanced Queries: Insert/Update</p>
+                    <p>Advanced Queries: Retrieve Data</p>
+                    <p>Indexing</p>
+                    <p>Scalability</p>
+                    <p>Big Data Capabilities</p>
+                </div>
+            </section>
+            <!-- Course objectives -->
+            <section>
+                <table>
+                    <tr>
+                        <td>
+                            <h2>Course objectives</h2>
+                            <p>Insert and retrieve data</p>
+                            <p>Indexing our documents</p>
+                            <p>Scale our servers</p>
+                            <p>Handle with large amount of data</p>
+                        </td>
+                        <td>
+                            <div class="what-will-you-know"></div>
+                        </td>
+                    </tr>
+                </table>
+            </section>
+            <!-- Install MongoDB -->
+            <section>
+                <h2>Install MongoDB</h2>
+                <section>
+                    <h3>Windows</h3>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/wcx3f0eUiAw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <p>
+                        <a href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/">MongoDB official installation tutorial</a>
+                    </p>
+                    <p>
+                        <a href="https://git-scm.com/download/win">GitBash - Recommended terminal client for windows</a>
+                    </p>
+                </section>
+                <section>
+                    <h3>Mac</h3>
+                    <p>
+                        <a href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/">MongoDB installation tutorial</a>
+                    </p>
+                    </section>
+            </section>
+            <!-- Last Course Overview -->
+            <section>
+                <section>
+                    <sub>MongoDB Structure</sub>
+                    <img style="width: 65%; background: transparent; border: 0px; box-shadow: 0 0 0px;" src="../assets/mongo-db-structure.png">
+                    <a href="http://bsonspec.org/">Saved with BSON</a>
+                </section>
+                <section>
+                    <sub>Documents database vs relational database(RDBMS)</sub>
+                    <img style="background: transparent; border: 0px; box-shadow: 0 0 0px;" src="../assets/sql-vs-nosql.png">
+                </section>
+                <section>
+                    <h3>Documents database advantages</h3>
+                    <div class="fragment"><p>Rich data model -> represent more naturally</p></div>
+                    <div class="fragment"><p>Not using joins (is it?)</p></div>
+                    <div class="fragment"><p>Performance oriented (BSON, Binary TCP)</p></div>
+                    <div class="fragment"><p>Dynamic schema (Comes with responsibility)</p></div>
+                </section>
+                <section>
+                    <h3>Is MongoDB Schemaless?</h3>
+                    <p>MongoDB has one schema rule: _id is mandatory</p>
+                    <p>By default is instance of the type 'ObjectId'</p>
+                    <img style="width: 65%; background: transparent; border: 0px; box-shadow: 0 0 0px;" src="../assets/object-id.png">
+                </section>
+                <section>
+                    <h3>Collections in MongoDB</h3>
+                    <div class="fragment"><p>Acts as "tables"</p></div>
+                    <div class="fragment"><p>Created automatically if not exists OR by db.createCollection()</p></div>
+                    <div class="fragment"><p>Different schema for each document (every document is individual)</p></div>
+                    <div class="fragment"><p>.validate() – scans the collection data structure for correctness</p></div>
+                </section>
+            </section>
+            <!-- Next Module -->
+            <section>
+                <a href="../module-2/index.html">Next Module</a>
+            </section>
+        </div>
+    </div>
+    <script src="../assets/lib/js/head.min.js"></script>
+    <script src="../assets/js/reveal.js"></script>
+    <!-- Reveal.js init script -->
+    <script>
+        Reveal.initialize({
+            history: true,
+            dependencies: [
+                { src: '../assets/plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: '../assets/plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: '../assets/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+            ]
+        });
+    </script>
+</body>
+</html>
