@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MongoDB</title>
+    <link rel="stylesheet" href="../assets/css/reveal.css">
+    <link rel="stylesheet" href="../assets/css/theme/league.css">
+    <link rel="stylesheet" href="../assets/lib/css/zenburn.css">
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+    <div class="att_logo"></div>
+    <div class="mongo-db-title"></div>
+    <div class="reveal">
+        <div class="slides">
+            <!-- MongoDB Advanced -->
+            <section>
+                <h1>MongoDB Advanced</h1>
+                <p style="font-size: 30px;">Module 5 - Scalability</p>
+                <sub>By Almog Laktivi</sub>
+            </section>
+            <!-- Replica-sets -->
+            <section>
+                <h2>Replica-sets</h2>
+                <section>
+                    <ul>
+                        <li>Group of mongod processes that maintain thesame data set</li>
+                        <li>Provide redundancy and high availability</li>
+                        <li>Provide increased read capacity</li>
+                        <li>Automatic failover</li>
+                        <li>Client writes to a primary Mongo DB server which sendsreplicas to the secondary's</li>
+                    </ul>
+                </section>
+                <section>
+                    <table>
+                        <tr>
+                            <td><img style="background: white; border: 0px; box-shadow: 0 0 0px;" src="../assets/replica-set-1.png"></td>
+                            <td><img style="width: 94%; background: white; border: 0px; box-shadow: 0 0 0px;" src="../assets/replica-set-2.png"></td>
+                        </tr>
+                    </table>
+                </section>
+            </section>
+            <!-- Sharding -->
+            <section>
+                <h2>Sharding</h2>
+                <section>
+                    <ul>
+                        <li>Method to distribute data across multiple machines</li>
+                        <li>Support deployments with large data sets</li>
+                        <li>Sharding types: Range, Hash and Tag-Aware</li>
+                        <li>DB operations are transparently routed across the cluster through a routing process proxy</li>
+                        <li>There is a config server which stores metadata and configuration settings for cluster</li>
+                    </ul>
+                </section>
+                <section>
+                    <td><img style="background: white; border: 0px; box-shadow: 0 0 0px;" src="../assets/sharding-1.png"></td>
+                </section>
+                <section>
+                    <td><img style="width:60%; background: white; border: 0px; box-shadow: 0 0 0px;" src="../assets/sharding-2.png"></td>
+                </section>
+                <section>
+                    <p>Tag-Aware Sharding</p>
+                    <td><img style="width:70%; background: white; border: 0px; box-shadow: 0 0 0px;" src="../assets/sharding-3.png"></td>
+                </section>
+                <section>
+                    <p>How to run Replica-Set Instances</p>
+                    <pre>
+                        <code data-trim data-noescape class="bash">
+                            mongod --port 27017 --dbpath /srv/mongodb/att-rs-0 --replSet att-rs --smallfiles --oplogSize 128
+                            mongo --port 27017
+                            rs.initiate({"_id": "att-rs", "members":[{"_id": 1, "host": "localhost:27017"}]})
+                            rs.add("localhost:27018")
+                        </code>
+                    </pre>
+                </section>
+            </section>
+            <!-- Next Module -->
+            <section>
+                <a href="../module-6/index.html">Next Module</a>
+            </section>
+        </div>
+    </div>
+    <script src="../assets/lib/js/head.min.js"></script>
+    <script src="../assets/js/reveal.js"></script>
+    <!-- Reveal.js init script -->
+    <script>
+        Reveal.initialize({
+            history: true,
+            dependencies: [
+                { src: '../assets/plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: '../assets/plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: '../assets/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+            ]
+        });
+    </script>
+</body>
+</html>
